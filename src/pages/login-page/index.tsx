@@ -10,12 +10,12 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { useState } from "react";
-import { selectCurrentToken } from "../../store/slices/authSlice";
 import { authApi } from "../../store/apis/axiosInstance";
 
 export const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   // const returnSecureToken = selectCurrentToken;
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogIn] = useState(false);
@@ -24,16 +24,33 @@ export const LoginPage = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const formSubmitHandler = async (e: React.FormEvent) => {
-    e.preventDefault();
-    let response;
-    if (isLogin) {
-      response =  await authApi.signIn({ email, password, returnSecureToken : true })
-    } else {
-      response = await authApi.signUp({ email, password, returnSecureToken : true })
-    }
+    const formSubmitHandler = async (e: React.FormEvent) => {
+      e.preventDefault();
+      try {
+        let response;
+        if (!isLogin) {
+          response = await authApi.signIn({
+            email,
+            password,
+            returnSecureToken: true,
+          });
+        } else {
+          response = await authApi.signUp({
+            email,
+            password,
+            returnSecureToken: true,
+          });
+          if(password !== confirmPassword){
+            alert('password does not match')
+            return;
+          }
 
-  };
+        }
+        console.log(response);
+      } catch (error) {
+        alert(error);
+      }
+    };
 
   const toggleButtonHandler = () => {
     setIsLogIn((prev) => !prev);
@@ -58,12 +75,16 @@ export const LoginPage = () => {
             label="Email"
             sx={{ bgcolor: "light" }}
             variant="outlined"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             label="password"
             variant="outlined"
             type={showPassword ? "text" : "password"}
             color="primary"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -74,7 +95,14 @@ export const LoginPage = () => {
               ),
             }}
           />
-          {isLogin && <TextField label="confirm password" variant="outlined" />}
+          {isLogin && (
+            <TextField
+              label="confirm password"
+              variant="outlined"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          )}
           <Button
             type="submit"
             variant="contained"
