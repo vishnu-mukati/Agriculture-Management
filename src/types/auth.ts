@@ -13,6 +13,7 @@ export interface AuthState {
 }
 
 export interface SignInResponse {
+    data : UserData,
    idToken : string,
    email : string,
    refreshToken : string,
