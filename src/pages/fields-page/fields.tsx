@@ -17,7 +17,7 @@ export const Fields = () => {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     console.log("the field is added");
   };
 

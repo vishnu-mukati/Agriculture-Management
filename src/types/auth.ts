@@ -1,31 +1,45 @@
-
-
 export interface UserData {
-    email : string ,
-    password : string,
-    returnSecureToken: boolean ,
+  email: string;
+  password: string;
+  returnSecureToken: boolean;
 }
 
 export interface AuthState {
-    user : UserData | null,
-    token : string | null,
-    isLogin : Boolean,
+  user: UserData | null;
+  token: string | null;
+  isLogin: Boolean;
 }
 
 export interface SignInResponse {
-    data : UserData,
-   idToken : string,
-   email : string,
-   refreshToken : string,
-   expiresIn : string,
-   registered : boolean,
-} 
+  data: UserData;
+  idToken: string;
+  email: string;
+  refreshToken: string;
+  expiresIn: string;
+  registered: boolean;
+}
 
 export interface SignUpResponse {
-    data : UserData,
-    email : string,
-    idToken : string,
-    expireIn : string,
-    RefreshToken : string,
+  data: UserData;
+  email: string;
+  idToken: string;
+  expireIn: string;
+  RefreshToken: string;
+}
 
+export interface fieldsData {
+  fieldsName: string;
+  fieldsArea: number;
+}
+
+export interface fieldsListDataState {
+    fieldsListData : fieldsData[],
+}
+
+export interface firebaseData {
+  fieldsData: fieldsListDataState;
+}
+
+export interface firebaseaddList {
+    name : string,
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { SignInResponse, SignUpResponse,  UserData } from "../../types/auth";
+import type { fieldsData, firebaseaddList, SignInResponse, SignUpResponse,  UserData } from "../../types/auth";
 
 const baseURL : string = "https://identitytoolkit.googleapis.com/v1/accounts";
 const Api_Key : string ="AIzaSyCxGGT5Nvo0AFdv4kmlggIrc314kF_yX3o";
@@ -9,6 +9,15 @@ const api   = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+const firebaseDbURL : string = "https://agriculture-management-d00e5-default-rtdb.firebaseio.com/";
+const firebaseDbApi = axios.create({
+  timeout : 10000,
+  headers : {
+    "Content-Type" : "application/json",
+  },
+})
+
 export const authApi = {
 signIn  : (data : UserData) : Promise<SignInResponse> =>{
      return api.post(`${baseURL}:signInWithPassword?key=${Api_Key}`,data);
@@ -18,6 +27,12 @@ signUp : (data : UserData) : Promise<SignUpResponse> => {
 },
 
 };
+
+export const dataApi = {
+  firebaseListStore : (data : fieldsData) : Promise<firebaseaddList> =>{
+    return firebaseDbApi.post(`${firebaseDbURL}:fieldList`)
+  }
+}
 
 export default api;
 
