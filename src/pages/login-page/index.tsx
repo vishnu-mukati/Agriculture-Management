@@ -52,14 +52,24 @@ export const LoginPage = () => {
             isLogin: true,
           })
         );
+        navigate("/");
       } else {
         const result = await authApi.signUp({
           email,
           password,
           returnSecureToken: true,
         });
+           dispatch(
+        Login({
+          user: result.data,
+          token: result.idToken,
+          isLogin: true,
+        })
+      );
+      navigate("/");
         if (password !== confirmPassword) {
           alert("password does not match");
+          setIsLoading(false);
           return;
         }
       }
@@ -96,10 +106,12 @@ export const LoginPage = () => {
             variant="outlined"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <TextField
             label="password"
             variant="outlined"
+            required
             type={showPassword ? "text" : "password"}
             // color="primary"
             value={password}
@@ -118,6 +130,7 @@ export const LoginPage = () => {
             <TextField
               label="confirm password"
               variant="outlined"
+              required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />

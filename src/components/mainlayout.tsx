@@ -20,24 +20,36 @@ import { Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { Dashboard } from "../pages/dashboard/Dashboard";
+import { useDispatch } from "react-redux";
+import { Logout } from "../store/slices/authSlice";
+import { Fields } from "../pages/fields-page/fields";
+import { useLocation } from "react-router-dom";
 
 const navItems = [
-  { label: "Dashboard", icon: <DashboardIcon />, path : "/"},
-  { label: "Orders", icon: <ShoppingCartIcon />, path : "/orders" },
-  { label: "Reports", icon: <BarChartIcon />, path : "/reports" },
-  { label: "Integrations", icon: <LayersIcon />, path : "/integrations" },
+  { label: "Dashboard", icon: <DashboardIcon />, path: "/" },
+  { label: "Fields", icon: <ShoppingCartIcon />, path: "/fields" },
+  { label: "Reports", icon: <BarChartIcon />, path: "/reports" },
+  { label: "Integrations", icon: <LayersIcon />, path: "/integrations" },
 ];
 
 export default function MainLayout() {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+
   const handleClick = (path: string) => {
-   navigate(path);
-   console.log(path);
+    navigate(path);
   };
 
+  const logOutHandler = () => {
+    dispatch(Logout());
+    navigate("/login");
+  }
+
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "block" }}>
       <Drawer
         variant="permanent"
         onMouseEnter={() => setHovered(true)}
@@ -132,7 +144,7 @@ export default function MainLayout() {
         <Box
           sx={{
             mb: 2,
-            display: "flex",
+            display: "block",
             justifyContent: hovered ? "flex-start" : "center",
             px: 2,
           }}
@@ -145,6 +157,7 @@ export default function MainLayout() {
               minWidth: 0,
               px: hovered ? 2 : 0,
             }}
+            onClick={logOutHandler}
           >
             {hovered && "LogOut"}
           </Button>
@@ -152,11 +165,9 @@ export default function MainLayout() {
       </Drawer>
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        {/* <Typography variant="h4" color="black">
-          Welcome To Agriculture Management
-        </Typography> */}
         {/* Add your page content here */}
-       <Dashboard/>
+          {location.pathname === "/" && <Dashboard />}
+          {location.pathname === "/fields" && <Fields />}
       </Box>
     </Box>
   );

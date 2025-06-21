@@ -22,6 +22,7 @@ export interface SignInResponse {
 } 
 
 export interface SignUpResponse {
+    data : UserData,
     email : string,
     idToken : string,
     expireIn : string,

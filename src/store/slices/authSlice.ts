@@ -15,9 +15,11 @@ const AuthSlice = createSlice({
         Login : (state,action : PayloadAction<{user : UserData,token : string, isLogin : boolean}>)=>{
             const { user , token, isLogin } = action.payload;
             state.user = user;
+            state.user.email = user.email.replace(/[@.]/g, "_");
             state.token = token;
             state.isLogin = isLogin;
             localStorage.setItem('token',token);
+            localStorage.setItem('email',state.user.email);
         },
         Logout : (state) =>{
             state.user = null;
