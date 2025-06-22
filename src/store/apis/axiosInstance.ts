@@ -1,38 +1,58 @@
 import axios from "axios";
-import type { fieldsData, firebaseaddList, SignInResponse, SignUpResponse,  UserData } from "../../types/auth";
+import type { AxiosResponse } from "axios";
+import type {
+  fieldsData,
+  firebaseDataResponse,
+  firebaseGetDataResponse,
+  SignInResponse,
+  SignUpResponse,
+  UserData,
+} from "../../types/auth";
+import { useSelector } from "react-redux";
+import type { RootState } from "../slices/index";
 
-const baseURL : string = "https://identitytoolkit.googleapis.com/v1/accounts";
-const Api_Key : string ="AIzaSyCxGGT5Nvo0AFdv4kmlggIrc314kF_yX3o";
-const api   = axios.create({
+const baseURL: string = "https://identitytoolkit.googleapis.com/v1/accounts";
+const Api_Key: string = "AIzaSyCxGGT5Nvo0AFdv4kmlggIrc314kF_yX3o";
+const api = axios.create({
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-const firebaseDbURL : string = "https://agriculture-management-d00e5-default-rtdb.firebaseio.com/";
+const firebaseDbURL: string =
+  "https://agriculture-management-d00e5-default-rtdb.firebaseio.com/";
 const firebaseDbApi = axios.create({
-  timeout : 10000,
-  headers : {
-    "Content-Type" : "application/json",
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json",
   },
-})
+});
 
 export const authApi = {
-signIn  : (data : UserData) : Promise<SignInResponse> =>{
-     return api.post(`${baseURL}:signInWithPassword?key=${Api_Key}`,data);
-},
-signUp : (data : UserData) : Promise<SignUpResponse> => {
-    return api.post(`${baseURL}:signUp?key=${Api_Key}`,data)
-},
-
+  signIn: (userdata: UserData): Promise<AxiosResponse<SignInResponse>> => {
+    return api.post(`${baseURL}:signInWithPassword?key=${Api_Key}`, userdata);
+  },
+  signUp: (userdata: UserData): Promise<AxiosResponse<SignUpResponse>> => {
+    return api.post(`${baseURL}:signUp?key=${Api_Key}`, userdata);
+  },
 };
 
 export const dataApi = {
-  firebaseListStore : (data : fieldsData) : Promise<firebaseaddList> =>{
-    return firebaseDbApi.post(`${firebaseDbURL}:fieldList`)
-  }
-}
+  firebaseListStore: (
+    data: fieldsData,
+    userEmail: string | null
+  ): Promise<AxiosResponse<firebaseDataResponse>> => {
+    return firebaseDbApi.post(
+      `${firebaseDbURL}/fieldList/${userEmail}.json`,
+      data
+    );
+  },
+  firebaseListGet: (
+    userEmail: string | null
+  ): Promise<AxiosResponse<firebaseGetDataResponse>> => {
+    return firebaseDbApi.get(`${firebaseDbURL}/fieldList/${userEmail}.json`);
+  },
+};
 
 export default api;
-

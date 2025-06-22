@@ -7,18 +7,70 @@ import {
   Typography,
   InputAdornment,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldsList } from "./fieldsList";
+import { dataApi } from "../../store/apis/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store/slices";
+import { addToList, removeFromList } from "../../store/slices/fielsListSlice";
 
 export const Fields = () => {
   const [formShow, setFormShow] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [fieldArea, setFieldArea] = useState("");
+  const dispatch = useDispatch();
+  // const userEmail = useSelector((state:RootState)=>state.auth.user?.email);
+  const userEmail = localStorage.getItem('email');
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!userEmail) return;
+
+
+    getData(); // when component mount for the first time
+    const interval = setInterval(() => {
+      getData();
+    }, 10000)
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, [])
+
+  const getData = async () => {
+    try {
+      const response = await dataApi.firebaseListGet(userEmail)
+      if (response.data) {
+       console.log(response.data);
+        const fieldGetData = Object.keys(response.data).map((dataId) => ({
+          ...response.data[dataId],
+          id: dataId,
+        }));
+        console.log(fieldGetData);
+        dispatch(addToList(fieldGetData));
+      }else{
+        dispatch(removeFromList());
+      }
+    } catch (err: any) {
+      console.error("failed to fielddata", err.response?.data?.error?.message);
+    }
+  }
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    console.log("the field is added");
+
+    const data = {
+      fieldName,
+      fieldArea: Number(fieldArea)
+    }
+
+    try {
+      const response = await dataApi.firebaseListStore(data, userEmail)
+      console.log(response.data);
+    } catch (err: any) {
+      console.error(err.response?.data?.error?.message);
+    }
+
+    console.log(`the field is added,${data}`);
   };
 
   const handleFormToggle = () => {
@@ -88,7 +140,7 @@ export const Fields = () => {
         )}
       </Box>
 
-      <Box><FieldsList/></Box>
+      <Box><FieldsList /></Box>
     </>
   );
 };

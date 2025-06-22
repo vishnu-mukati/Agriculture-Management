@@ -36,46 +36,48 @@ export const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      if (!isLogin) {
-        const response = await authApi.signIn({
-          email,
-          password,
-          returnSecureToken: true,
-        });
+    const data = {
+      email,
+      password,
+      returnSecureToken: true,
+    };
 
-        console.log(response);
-        dispatch(
-          Login({
-            user: response.data,
-            token: response.idToken,
-            isLogin: true,
-          })
-        );
-        navigate("/");
-      } else {
-        const result = await authApi.signUp({
-          email,
-          password,
-          returnSecureToken: true,
-        });
-           dispatch(
-        Login({
-          user: result.data,
-          token: result.idToken,
-          isLogin: true,
-        })
-      );
-      navigate("/");
+    try {
+      if (isLogin) {
         if (password !== confirmPassword) {
           alert("password does not match");
           setIsLoading(false);
           return;
         }
+        const result = await authApi.signUp(data);
+        dispatch(
+          Login({
+            user: data,
+            token: result.data.idToken,
+            isLogin: true,
+          })
+        );
+
+        navigate("/");
+      } else {
+        const response = await authApi.signIn(data);
+        dispatch(
+          Login({
+            user: data,
+            token: response.data.idToken,
+            isLogin: true,
+          })
+        );
+
+        if (!response.data.idToken) {
+          alert("Signup failed. Please check your credentials.");
+          return;
+        }
+        navigate("/");
       }
     } catch (err: any) {
-      console.error("Failed to login:", err.response.data.error.message);
-      alert(`'Failed to login',${err.response.data.error.message}`);
+      console.error("Failed to login:", err.response?.data?.error?.message);
+      alert(`'Failed to login',${err.response?.data?.error?.message}`);
     }
 
     navigate("/");
