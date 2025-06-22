@@ -10,6 +10,12 @@ export interface AuthState {
   isLogin: Boolean;
 }
 
+export interface LoginPayload {
+  user: { email: string ,password: string, returnSecureToken:boolean }; // add other user fields if needed
+  token: string;
+  isLogin: boolean;
+}
+
 // export interface RootState {
 //   auth : AuthState;
 // }
@@ -30,12 +36,8 @@ export interface SignUpResponse {
 }
 
 export interface fieldsData {
-  fieldName: string,
-  fieldArea: number,
-}
-
-export interface fieldsListDataState {
-    fieldsListData : fieldsData[],
+  fieldName: string;
+  fieldArea: number;
 }
 
 export interface firebaseData {
@@ -43,14 +45,22 @@ export interface firebaseData {
 }
 
 export interface firebaseDataResponse {
-    name : string,
+  name: string;
+}
+
+export interface getfieldData {
+  id: string;
+  fieldName: string;
+  fieldArea: number;
+}
+export interface fieldsListDataState {
+  fieldsListData: getfieldData[];
 }
 
 export interface firebaseGetDataResponse {
-  [key : string] : {
-    fieldName : string,
-    fieldArea : number,
-    id : string,
-  }
+  [key: string]: {
+    fieldName: string;
+    fieldArea: number;
+    id: string;
+  };
 }
-

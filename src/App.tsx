@@ -7,7 +7,6 @@ import MainLayout from "./components/mainlayout";
 
 function App() {
   const isAuth = useSelector((state: RootState) => state.auth.isLogin);
-  console.log(isAuth);
   return (
     <BrowserRouter>
       <Routes>

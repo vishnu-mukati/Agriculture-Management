@@ -12,15 +12,17 @@ import { FieldsList } from "./fieldsList";
 import { dataApi } from "../../store/apis/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/slices";
-import { addToList, removeFromList } from "../../store/slices/fielsListSlice";
+import { addToList, addFieldToTop, removeFromList } from "../../store/slices/fieldsListSlice";
 
 export const Fields = () => {
   const [formShow, setFormShow] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [fieldArea, setFieldArea] = useState("");
   const dispatch = useDispatch();
-  // const userEmail = useSelector((state:RootState)=>state.auth.user?.email);
-  const userEmail = localStorage.getItem('email');
+  const userEmail = useSelector((state:RootState)=>state.auth.user?.email);
+  // const userEmail = localStorage.getItem('email');
+console.log(userEmail);
+const safeUserEmail: string | null = userEmail ?? null;
 
   useEffect(() => {
     if (!userEmail) return;
@@ -38,19 +40,20 @@ export const Fields = () => {
 
   const getData = async () => {
     try {
-      const response = await dataApi.firebaseListGet(userEmail)
+      const response = await dataApi.firebaseListGet(safeUserEmail)
       if (response.data) {
-       console.log(response.data);
-        const fieldGetData = Object.keys(response.data).map((dataId) => ({
-          ...response.data[dataId],
-          id: dataId,
+        const fieldGetData = Object.keys(response.data).map((id) => ({
+          ...response.data[id],
+          id,
         }));
-        console.log(fieldGetData);
+        
         dispatch(addToList(fieldGetData));
       }else{
         dispatch(removeFromList());
       }
     } catch (err: any) {
+      console.log(err);
+      
       console.error("failed to fielddata", err.response?.data?.error?.message);
     }
   }
@@ -64,13 +67,16 @@ export const Fields = () => {
     }
 
     try {
-      const response = await dataApi.firebaseListStore(data, userEmail)
-      console.log(response.data);
+      const response = await dataApi.firebaseListStore(data, safeUserEmail)
+      const newField = {
+        id : response.data.name,
+        fieldName,
+        fieldArea : Number(fieldArea),
+      }
+      dispatch(addFieldToTop(newField))
     } catch (err: any) {
       console.error(err.response?.data?.error?.message);
     }
-
-    console.log(`the field is added,${data}`);
   };
 
   const handleFormToggle = () => {

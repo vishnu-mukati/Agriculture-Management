@@ -55,4 +55,12 @@ export const dataApi = {
   },
 };
 
+export const deleteApi = {
+  firebaseDeleteData : (
+    userEmail : string |null,
+  ) =>{
+   return firebaseDbApi.delete(`${firebaseDbURL}/fieldList/${userEmail}`)
+  }
+}
+
 export default api;
