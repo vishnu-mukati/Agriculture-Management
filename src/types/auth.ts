@@ -1,3 +1,9 @@
+import { DirectionsRailwayFilledOutlined, DownloadForOffline, FloodTwoTone, Folder, Javascript, RestartAlt, TheaterComedy } from "@mui/icons-material";
+import { SliderValueLabel } from "@mui/material";
+import { internal_createExtendSxProp } from "@mui/material/zero-styled";
+import { UNSAFE_useFogOFWarDiscovery } from "react-router-dom";
+
+
 export interface UserData {
   email: string;
   password: string;
@@ -53,8 +59,16 @@ export interface getfieldData {
   fieldName: string;
   fieldArea: number;
 }
+
+export interface editfieldData {
+  fieldName : string,
+  fieldArea : number,
+  id : string,
+}
+
 export interface fieldsListDataState {
   fieldsListData: getfieldData[];
+    editDataList : editfieldData | null;
 }
 
 export interface firebaseGetDataResponse {

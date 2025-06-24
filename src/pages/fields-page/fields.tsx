@@ -12,75 +12,104 @@ import { FieldsList } from "./fieldsList";
 import { dataApi } from "../../store/apis/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/slices";
-import { addToList, addFieldToTop, removeFromList } from "../../store/slices/fieldsListSlice";
+import {
+  addToList,
+  addFieldToTop,
+  removeFromList,
+} from "../../store/slices/fieldsListSlice";
+import { editApi } from "../../store/apis/axiosInstance";
+import { clearEditData } from "../../store/slices/fieldsListSlice";
 
 export const Fields = () => {
   const [formShow, setFormShow] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [fieldArea, setFieldArea] = useState("");
   const dispatch = useDispatch();
-  const userEmail = useSelector((state:RootState)=>state.auth.user?.email);
+  const userEmail = useSelector((state: RootState) => state.auth.user?.email);
+  const editData = useSelector((state: RootState) => state.list.editDataList);
+  console.log(editData);
+
   // const userEmail = localStorage.getItem('email');
-console.log(userEmail);
-const safeUserEmail: string | null = userEmail ?? null;
+  console.log(userEmail);
+  const safeUserEmail: string |null =userEmail??null;
+
+  useEffect(() => {
+    if (editData) {
+      setFieldName(editData.fieldName);
+      setFieldArea(editData.fieldArea.toString()); // assuming fieldArea is a number
+      setFormShow(true);
+    }
+  }, [editData]);
 
   useEffect(() => {
     if (!userEmail) return;
 
-
     getData(); // when component mount for the first time
     const interval = setInterval(() => {
       getData();
-    }, 10000)
+    }, 20000);
 
     return () => {
       clearInterval(interval);
-    }
-  }, [])
+    };
+  }, [userEmail]);
 
   const getData = async () => {
     try {
-      const response = await dataApi.firebaseListGet(safeUserEmail)
+      const response = await dataApi.firebaseListGet(safeUserEmail);
       if (response.data) {
         const fieldGetData = Object.keys(response.data).map((id) => ({
           ...response.data[id],
           id,
         }));
-        
+
         dispatch(addToList(fieldGetData));
-      }else{
+      } else {
         dispatch(removeFromList());
       }
     } catch (err: any) {
       console.log(err);
-      
+
       console.error("failed to fielddata", err.response?.data?.error?.message);
     }
-  }
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const data = {
       fieldName,
-      fieldArea: Number(fieldArea)
-    }
+      fieldArea: Number(fieldArea),
+    };
 
     try {
-      const response = await dataApi.firebaseListStore(data, safeUserEmail)
-      const newField = {
-        id : response.data.name,
-        fieldName,
-        fieldArea : Number(fieldArea),
+      if (editData?.id) {
+        await editApi.firebaseEditData(safeUserEmail,editData.id, data);
+        await getData();
+        dispatch(clearEditData());
+      } else {
+        const response = await dataApi.firebaseListStore(data, safeUserEmail);
+        const newField = {
+          id: response.data.name,
+          fieldName,
+          fieldArea: Number(fieldArea),
+        };
+        dispatch(addFieldToTop(newField));
       }
-      dispatch(addFieldToTop(newField))
     } catch (err: any) {
       console.error(err.response?.data?.error?.message);
     }
+
+    setFieldName("");
+    setFieldArea("");
+    setFormShow(false);
   };
 
   const handleFormToggle = () => {
-    setFormShow((prev) => !prev);
+     setFormShow((prev) => !prev);
+  setFieldName("");
+  setFieldArea("");
+  dispatch(clearEditData());
   };
 
   return (
@@ -128,7 +157,7 @@ const safeUserEmail: string | null = userEmail ?? null;
                       <InputAdornment position="end">ha</InputAdornment>
                     ),
                   }}
-                  inputProps={{ min: 0 }}
+                  inputProps={{ min: 0 ,step:"any"}}
                 />
               </Stack>
               <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
@@ -142,11 +171,22 @@ const safeUserEmail: string | null = userEmail ?? null;
             </form>
           </Paper>
         ) : (
-          <Button onClick={handleFormToggle}>Add Field</Button>
+          <Button
+            variant="contained"
+            onClick={handleFormToggle}
+            disableRipple
+            sx={{
+              margin: "20px",
+              "&:focus": { outline: "none" },
+            }}
+          >
+            Add Field
+          </Button>
         )}
       </Box>
-
-      <Box><FieldsList /></Box>
+      <Box>
+        <FieldsList />
+      </Box>
     </>
   );
 };

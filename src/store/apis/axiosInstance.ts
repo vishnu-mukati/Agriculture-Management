@@ -8,8 +8,6 @@ import type {
   SignUpResponse,
   UserData,
 } from "../../types/auth";
-import { useSelector } from "react-redux";
-import type { RootState } from "../slices/index";
 
 const baseURL: string = "https://identitytoolkit.googleapis.com/v1/accounts";
 const Api_Key: string = "AIzaSyCxGGT5Nvo0AFdv4kmlggIrc314kF_yX3o";
@@ -56,11 +54,24 @@ export const dataApi = {
 };
 
 export const deleteApi = {
-  firebaseDeleteData : (
-    userEmail : string |null,
-  ) =>{
-   return firebaseDbApi.delete(`${firebaseDbURL}/fieldList/${userEmail}`)
-  }
-}
+  firebaseDeleteData: (userEmail: string | null, id: string) => {
+    return firebaseDbApi.delete(
+      `${firebaseDbURL}/fieldList/${userEmail}/${id}.json`
+    );
+  },
+};
+
+export const editApi = {
+  firebaseEditData: (
+    userEmail: string | null,
+    id: string,
+    editData:{fieldName :string,fieldArea:number},
+  ) => {
+    return firebaseDbApi.patch(
+      `${firebaseDbURL}/fieldList/${userEmail}/${id}.json`,
+      editData
+    );
+  },
+};
 
 export default api;
