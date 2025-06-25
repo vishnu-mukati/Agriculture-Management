@@ -19,14 +19,17 @@ import {
   edidtFromList,
 } from "../../store/slices/fieldsListSlice";
 import { deleteApi } from "../../store/apis/axiosInstance";
+import { useNavigate } from "react-router-dom";
 export const FieldsList = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const listData = useSelector((state: RootState) => state.list.fieldsListData);
   const userEmail = useSelector((state: RootState) => state.auth.user?.email);
 
   const rows = listData;
-  const handleTableData = (fieldName: string) => {
-    console.log("this row is clicked", fieldName);
+  const handleTableData = (fieldName:string,id:string) => {
+    console.log(fieldName,"is clicked")
+    navigate(`/fieldForm/${id}`);
   };
 
   const handleDeleteData = async (id: string) => {
@@ -119,7 +122,7 @@ export const FieldsList = () => {
                     }}
                   >
                     <InfoIcon
-                      onClick={() => handleTableData(field.fieldName)}
+                      onClick={() => handleTableData(field.fieldName,field.id)}
                       sx={{ color: "primary.main" }}
                     />
                   </IconButton>

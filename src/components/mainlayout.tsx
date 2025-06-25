@@ -18,18 +18,18 @@ const drawerWidthCollapsed = 50;
 const drawerWidthExpanded = 180;
 import { Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Dashboard } from "../pages/dashboard/Dashboard";
 import { useDispatch } from "react-redux";
 import { Logout } from "../store/slices/authSlice";
 import { Fields } from "../pages/fields-page/fields";
 import { useLocation } from "react-router-dom";
+import { FieldForm } from "../pages/fields-page/fieldForm";
+import { FieldDetails } from "../pages/fields-page/fieldDetails";
 
 const navItems = [
   { label: "Dashboard", icon: <DashboardIcon />, path: "/" },
   { label: "Fields", icon: <ShoppingCartIcon />, path: "/fields" },
-  { label: "Reports", icon: <BarChartIcon />, path: "/reports" },
-  { label: "Integrations", icon: <LayersIcon />, path: "/integrations" },
 ];
 
 export default function MainLayout() {
@@ -166,8 +166,7 @@ export default function MainLayout() {
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         {/* Add your page content here */}
-          {location.pathname === "/" && <Dashboard />}
-          {location.pathname === "/fields" && <Fields />}
+         <Outlet/>
       </Box>
     </Box>
   );

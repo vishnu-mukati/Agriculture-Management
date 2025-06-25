@@ -4,6 +4,10 @@ import { LoginPage } from "./pages/login-page";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import type { RootState } from "./store/slices";
 import MainLayout from "./components/mainlayout";
+import { Dashboard } from "./pages/dashboard/Dashboard";
+import { Fields } from "./pages/fields-page/fields";
+import { FieldForm } from "./pages/fields-page/fieldForm";
+import { FieldDetails } from "./pages/fields-page/fieldDetails";
 
 function App() {
   const isAuth = useSelector((state: RootState) => state.auth.isLogin);
@@ -12,13 +16,16 @@ function App() {
       <Routes>
         <Route
           path="/login"
-          element={!isAuth ?  <LoginPage /> : <Navigate to="/" /> }
+          element={!isAuth ? <LoginPage /> : <Navigate to="/" />}
         />
-        {/* <Route path="/" element={isAuth ? <Dashboard/> : <Navigate to="/login"/>}/> */}
-        <Route path="/*" element={isAuth ? <MainLayout/> : <Navigate to="/login"/>}/>
-        {/* {isAuth && (
-          <Route path="/dashboard" element={<Dashboard/>}/>
-        )} */}
+        {isAuth && (
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="/fields" element={<Fields />} />
+           <Route path="fieldForm/:id" element={<FieldForm />} />
+          </Route>
+        )}
+        {!isAuth && <Route path="*" element={<Navigate to="/login" />} />}
       </Routes>
     </BrowserRouter>
   );
