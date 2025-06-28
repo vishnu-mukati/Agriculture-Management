@@ -11,7 +11,7 @@ const workListSlice = createSlice({
     initialState,
     reducers : {
     addToWorkList: (state,action:PayloadAction<getWorkData[]>)=>{
-          state.workList = action.payload;
+          state.workList = action.payload.reverse();
     },
      addWorkToTop: (state, action: PayloadAction<getWorkData>) => {
           state.workList.unshift(action.payload);
