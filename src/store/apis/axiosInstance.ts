@@ -4,9 +4,11 @@ import type {
   fieldsData,
   firebaseDataResponse,
   firebaseGetDataResponse,
+  firebaseWorkDataResponse,
   SignInResponse,
   SignUpResponse,
   UserData,
+  workData,
 } from "../../types/auth";
 
 const baseURL: string = "https://identitytoolkit.googleapis.com/v1/accounts";
@@ -65,12 +67,31 @@ export const editApi = {
   firebaseEditData: (
     userEmail: string | null,
     id: string,
-    editData:{fieldName :string,fieldArea:number},
+    editData: { fieldName: string; fieldArea: number }
   ) => {
     return firebaseDbApi.patch(
       `${firebaseDbURL}/fieldList/${userEmail}/${id}.json`,
       editData
     );
+  },
+};
+
+export const workListApi = {
+  firebaseWorkData: (
+    userEmail: string | null,
+    id: string | undefined,
+    workData: workData,
+  ) : Promise<AxiosResponse<firebaseDataResponse>>=>  {
+    return firebaseDbApi.post(
+      `${firebaseDbURL}/workList/${userEmail}/${id}.json`,
+      workData
+    );
+  },
+    firebaseListGet: (
+    userEmail: string | null,
+    id : string|undefined,
+  ): Promise<AxiosResponse<firebaseWorkDataResponse>> => {
+    return firebaseDbApi.get(`${firebaseDbURL}/workList/${userEmail}/${id}.json`);
   },
 };
 

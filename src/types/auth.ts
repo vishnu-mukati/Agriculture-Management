@@ -1,8 +1,3 @@
-import { DirectionsRailwayFilledOutlined, DownloadForOffline, FloodTwoTone, Folder, Javascript, RestartAlt, TheaterComedy } from "@mui/icons-material";
-import { SliderValueLabel } from "@mui/material";
-import { internal_createExtendSxProp } from "@mui/material/zero-styled";
-import { UNSAFE_useFogOFWarDiscovery } from "react-router-dom";
-
 
 export interface UserData {
   email: string;
@@ -21,10 +16,6 @@ export interface LoginPayload {
   token: string;
   isLogin: boolean;
 }
-
-// export interface RootState {
-//   auth : AuthState;
-// }
 
 export interface SignInResponse {
   idToken: string;
@@ -46,9 +37,7 @@ export interface fieldsData {
   fieldArea: number;
 }
 
-export interface firebaseData {
-  fieldsData: fieldsListDataState;
-}
+
 
 export interface firebaseDataResponse {
   name: string;
@@ -71,10 +60,39 @@ export interface fieldsListDataState {
     editDataList : editfieldData | null;
 }
 
+export interface firebaseData {
+  fieldsData: fieldsListDataState;
+}
+
 export interface firebaseGetDataResponse {
   [key: string]: {
     fieldName: string;
     fieldArea: number;
     id: string;
   };
+}
+
+export interface workData {
+  fieldWork : string,
+  workDate : string|undefined,
+  cost : number|undefined,
+}
+
+export interface getWorkData{
+   id:string,
+   fieldWork : string,
+   workDate : string|undefined,
+   cost : number,
+}
+export interface workDataListState {
+  workList : getWorkData[],
+}
+
+export interface firebaseWorkDataResponse{
+  [key:string] :{
+    fieldWork : string,
+    workDate : string,
+    cost : number,
+    id : string,
+  }
 }

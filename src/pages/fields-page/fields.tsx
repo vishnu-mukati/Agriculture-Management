@@ -138,7 +138,7 @@ export const Fields = () => {
               Fields
             </Typography>
 
-            <form onSubmit={handleFormSubmit}>
+            <Box component="form" onSubmit={handleFormSubmit} sx={{p:2}}>
               <Stack alignItems="center" spacing={2} direction="row">
                 <TextField
                   label="field-name"
@@ -168,7 +168,7 @@ export const Fields = () => {
                   Cancel
                 </Button>
               </Stack>
-            </form>
+            </Box>
           </Paper>
         ) : (
           <Button

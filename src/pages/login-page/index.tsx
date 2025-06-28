@@ -101,7 +101,7 @@ export const LoginPage = () => {
       <Typography variant="h4" gutterBottom>
         {!isLogin ? "Login Page" : "SignUp Page"}
       </Typography>
-      <form onSubmit={formSubmitHandler}>
+      <Box component="form" onSubmit={formSubmitHandler}>
         <Stack spacing={2} direction="column">
           <TextField
             label="Email"
@@ -196,7 +196,7 @@ export const LoginPage = () => {
             {isLogin ? "logIn" : "SignUp"}
           </Link>
         </Typography>
-      </form>
+      </Box>
     </Paper>
   );
 };

@@ -7,7 +7,6 @@ import MainLayout from "./components/mainlayout";
 import { Dashboard } from "./pages/dashboard/Dashboard";
 import { Fields } from "./pages/fields-page/fields";
 import { FieldForm } from "./pages/fields-page/fieldForm";
-import { FieldDetails } from "./pages/fields-page/fieldDetails";
 
 function App() {
   const isAuth = useSelector((state: RootState) => state.auth.isLogin);
