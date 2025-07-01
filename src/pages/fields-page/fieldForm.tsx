@@ -22,6 +22,8 @@ import {
   removeWorkList,
 } from "../../store/slices/fieldWorkSlice";
 import { WorkList } from "./workList";
+import { dataApi } from "../../store/apis/axiosInstance";
+import { addToList,removeFromList } from "../../store/slices/fieldsListSlice";
 
 export const FieldForm = () => {
   const { id } = useParams();
@@ -39,6 +41,8 @@ export const FieldForm = () => {
   const fieldList = useSelector(
     (state: RootState) => state.list.fieldsListData
   );
+
+
   const fieldData = fieldList
     .filter((item) => item.id === id)
     .map((item) => item.fieldName);
@@ -59,20 +63,31 @@ export const FieldForm = () => {
 
   const getData = async () => {
     try {
+      const result =  await dataApi.firebaseListGet(safeUserEmail);
+         if (result.data) {
+                const fieldGetData = Object.keys(result.data).map((id) => ({
+                  ...result.data[id],
+                  id,
+                }));
+        
+                dispatch(addToList(fieldGetData));
+              } else {
+                dispatch(removeFromList());
+              }
       const response = await workListApi.firebaseListGet(safeUserEmail, id);
       if (response.data) {
         const finalData = Object.keys(response.data).map((dataId) => ({
           ...response.data[dataId],
           id: dataId,
-          fieldId : id,
+          fieldId: id,
         }));
-        console.log(finalData);
+
         dispatch(addToWorkList(finalData));
       } else {
         dispatch(removeWorkList());
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -99,11 +114,11 @@ export const FieldForm = () => {
         fieldWork,
         workDate: dayjs(date).format("DD-MM-YYYY"),
         cost: Number(cost),
-        fieldId : id,
+        fieldId: id,
       };
       dispatch(addWorkToTop(newData));
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
 
     setFieldWork("");
@@ -118,7 +133,16 @@ export const FieldForm = () => {
 
   return (
     <>
-      <Typography variant="h3" color="black" bgcolor="lightgray">
+      <Typography variant="h3" sx={{
+        bgcolor: "#e3f2fd",
+        color: "#0d47a1",
+        px: 2,
+        py: 1,
+        borderRadius: 1,
+        fontWeight: "bold",
+        mb: 2,
+      }}
+      >
         Welcome To {fieldData}
       </Typography>
       <Box
@@ -134,11 +158,13 @@ export const FieldForm = () => {
           <Paper
             elevation={6}
             sx={{
-              width: "500px",
-              bgcolor: "offwhite",
-              minHeight: "150px",
-              padding: "32px",
-              alignItems: "center",
+              width: "88%",
+              maxWidth: "600px",
+              bgcolor: "#fdfefe",
+              border: "1px solid #e0e0e0",
+              borderRadius: 2,
+              p: 4,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
             }}
           >
             <Typography variant="h4" gutterBottom>
@@ -155,6 +181,8 @@ export const FieldForm = () => {
                   fullWidth
                   value={fieldWork}
                   size="medium"
+                  variant="outlined"
+                  sx={{ bgcolor: "#ffffff" }}
                   helperText="Please Select Your Field Work"
                   onChange={(e) => setFieldWork(e.target.value)}
                   required
@@ -177,6 +205,8 @@ export const FieldForm = () => {
                     slotProps={{
                       textField: {
                         fullWidth: true,
+                        variant: "outlined",
+                        sx: { bgcolor: "#ffffff" },
                       },
                     }}
                   />
@@ -195,10 +225,16 @@ export const FieldForm = () => {
                 />
               </Box>
               <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-                <Button variant="contained" type="submit">
+                <Button variant="contained"
+                  color="primary"
+                  type="submit"
+                  sx={{ textTransform: "none", fontWeight: "bold", px: 3 }}>
                   Add Field
                 </Button>
-                <Button variant="contained" onClick={handleFormToggle}>
+                <Button variant="outlined"
+                  color="error"
+                  onClick={handleFormToggle}
+                  sx={{ textTransform: "none", fontWeight: "bold", px: 3 }}>
                   Cancel
                 </Button>
               </Stack>
@@ -208,10 +244,15 @@ export const FieldForm = () => {
           <Button
             variant="contained"
             onClick={handleFormToggle}
-            disableRipple
             sx={{
-              margin: "20px",
-              "&:focus": { outline: "none" },
+              mt: 2,
+              textTransform: "none",
+              fontWeight: "bold",
+              bgcolor: "#1976d2",
+              margin:"12px",
+              "&:hover": {
+                bgcolor: "#1565c0",
+              },
             }}
           >
             Add Field

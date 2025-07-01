@@ -31,7 +31,7 @@ export const Fields = () => {
 
   // const userEmail = localStorage.getItem('email');
 
-  const safeUserEmail: string |null =userEmail??null;
+  const safeUserEmail: string | null = userEmail ?? null;
 
   useEffect(() => {
     if (editData) {
@@ -83,7 +83,7 @@ export const Fields = () => {
 
     try {
       if (editData?.id) {
-        await editApi.firebaseEditData(safeUserEmail,editData.id, data);
+        await editApi.firebaseEditData(safeUserEmail, editData.id, data);
         await getData();
         dispatch(clearEditData());
       } else {
@@ -105,15 +105,135 @@ export const Fields = () => {
   };
 
   const handleFormToggle = () => {
-     setFormShow((prev) => !prev);
-  setFieldName("");
-  setFieldArea("");
-  dispatch(clearEditData());
+    setFormShow((prev) => !prev);
+    setFieldName("");
+    setFieldArea("");
+    dispatch(clearEditData());
   };
 
   return (
     <>
+
       <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          mt: 2,
+          bgcolor: "#f9f9f9",
+          px: 2,
+          py: 2,
+          borderRadius: 2,
+        }}
+      >
+        {formShow ? (
+          <Paper
+            elevation={6}
+            sx={{
+              width: "100%",
+              maxWidth: "600px",
+              bgcolor: "#ffffff",
+              border: "1px solid #e0e0e0",
+              borderRadius: 2,
+              p: 4,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+            }}
+          >
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={{
+                color: "#0d47a1",
+                fontWeight: "bold",
+                mb: 3,
+              }}
+            >
+              {editData?.id ? "Edit Field" : "Add Field"}
+            </Typography>
+
+            <Box component="form" onSubmit={handleFormSubmit}>
+              <Stack alignItems="center" spacing={2} direction="row">
+                <TextField
+                  label="Field Name"
+                  fullWidth
+                  variant="outlined"
+                  value={fieldName}
+                  onChange={(e) => setFieldName(e.target.value)}
+                  required
+                  sx={{ bgcolor: "#ffffff" }}
+                />
+                <TextField
+                  label="Field Area"
+                  fullWidth
+                  variant="outlined"
+                  value={fieldArea}
+                  onChange={(e) => setFieldArea(e.target.value)}
+                  type="number"
+                  required
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">Bi</InputAdornment>
+                    ),
+                  }}
+                  inputProps={{ min: 0, step: "any" }}
+                  sx={{ bgcolor: "#ffffff" }}
+                />
+              </Stack>
+              <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    textTransform: "none",
+                    fontWeight: "bold",
+                    bgcolor: "#1976d2",
+                    px: 3,
+                    "&:hover": { bgcolor: "#1565c0" },
+                  }}
+                >
+                  {editData?.id ? "Update" : "Add"}
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleFormToggle}
+                  sx={{
+                    textTransform: "none",
+                    fontWeight: "bold",
+                    px: 3,
+                  }}
+                >
+                  Cancel
+                </Button>
+              </Stack>
+            </Box>
+          </Paper>
+        ) : (
+          <Button
+            variant="contained"
+            onClick={handleFormToggle}
+            disableRipple
+            sx={{
+              textTransform: "none",
+              fontWeight: "bold",
+              bgcolor: "#1976d2",
+              "&:hover": {
+                bgcolor: "#1565c0",
+              },
+            }}
+          >
+            Add Field
+          </Button>
+        )}
+      </Box>
+
+      <Box mt={3}>
+        <FieldsList />
+      </Box>
+
+
+      {/* <Box
         sx={{
           width: "100%",
           display: "flex",
@@ -153,7 +273,7 @@ export const Fields = () => {
                   required
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="end">ha</InputAdornment>
+                      <InputAdornment position="end">Bi</InputAdornment>
                     ),
                   }}
                   inputProps={{ min: 0 ,step:"any"}}
@@ -185,7 +305,7 @@ export const Fields = () => {
       </Box>
       <Box>
         <FieldsList />
-      </Box>
+      </Box> */}
     </>
   );
 };

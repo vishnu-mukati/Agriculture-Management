@@ -27,7 +27,7 @@ export const FieldsList = () => {
   const userEmail = useSelector((state: RootState) => state.auth.user?.email);
 
   const rows = listData;
-  const handleTableData = (fieldName:string,id:string) => {
+  const handleTableData = (fieldName: string, id: string) => {
     navigate(`/fieldForm/${id}`);
   };
 
@@ -47,16 +47,18 @@ export const FieldsList = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 450 }} aria-label="simple table">
+
+
+    <TableContainer component={Paper} sx={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)", borderRadius: 2 }}>
+      <Table sx={{ minWidth: 680 }} aria-label="fields table">
         <TableHead>
-          <TableRow sx={{ bgcolor: "lightgrey" }}>
-            <TableCell align="center">S.No</TableCell>
-            <TableCell align="center">Field Name</TableCell>
-            <TableCell align="center">Field Area</TableCell>
-            <TableCell align="right">Edit</TableCell>
-            <TableCell align="right">Delete</TableCell>
-            <TableCell align="right">Info</TableCell>
+          <TableRow sx={{ bgcolor: "#f0f4f8" }}>
+            <TableCell align="center" sx={{ fontWeight: "bold" }}>S.No</TableCell>
+            <TableCell align="center" sx={{ fontWeight: "bold" }}>Field Name</TableCell>
+            <TableCell align="center" sx={{ fontWeight: "bold" }}>Field Area</TableCell>
+            <TableCell align="center" sx={{ fontWeight: "bold" }}>Edit</TableCell>
+            <TableCell align="center" sx={{ fontWeight: "bold" }}>Delete</TableCell>
+            <TableCell align="center" sx={{ fontWeight: "bold" }}>Info</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -64,63 +66,41 @@ export const FieldsList = () => {
             rows.map((field, id) => (
               <TableRow
                 key={field.id}
+                hover
                 sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                  px: 2,
-                  py: 1.5,
-                  borderRadius: 2,
-                  transition: "background 0.2s",
+                  transition: "background 0.3s",
                   "&:hover": {
-                    backgroundColor: "#e0e0e0",
+                    backgroundColor: "#e3f2fd",
                   },
-                  my: 0.5,
                 }}
               >
-                <TableCell align="center">{id + 1}</TableCell>
-                <TableCell component="th" scope="row" align="center">
+                <TableCell align="center" onClick={() => handleTableData(field.fieldName, field.id)}>
+                  {id + 1}
+                </TableCell>
+                <TableCell align="center" onClick={() => handleTableData(field.fieldName, field.id)}>
                   {field.fieldName}
                 </TableCell>
-                <TableCell align="center">{field.fieldArea}</TableCell>
-                <TableCell align="right">
-                  <IconButton
-                    disableRipple
-                    sx={{
-                      "&:focus": { outline: "none" },
-                    }}
-                  >
+                <TableCell align="center" onClick={() => handleTableData(field.fieldName, field.id)}>
+                  {field.fieldArea}
+                </TableCell>
+                <TableCell align="center">
+                  <IconButton disableRipple sx={{ "&:focus": { outline: "none" } }}>
                     <EditIcon
-                      sx={{ color: "warning.main" }}
-                      onClick={() =>
-                        handleEditData(
-                          field.id,
-                          field.fieldName,
-                          field.fieldArea
-                        )
-                      }
+                      onClick={() => handleEditData(field.id, field.fieldName, field.fieldArea)}
+                      sx={{ color: "#ff9800" }}
                     />
                   </IconButton>
                 </TableCell>
-                <TableCell align="right">
-                  <IconButton
-                    disableRipple
-                    sx={{
-                      color: "#f44336",
-                      "&:focus": { outline: "none" },
-                    }}
-                  >
-                    <DeleteIcon onClick={() => handleDeleteData(field.id)} />
+                <TableCell align="center">
+                  <IconButton disableRipple sx={{ "&:focus": { outline: "none" } }}>
+                    <DeleteIcon onClick={() => handleDeleteData(field.id)} sx={{ color: "#f44336" }} />
                   </IconButton>
                 </TableCell>
-                <TableCell align="right">
-                  <IconButton
-                    disableRipple
-                    sx={{
-                      "&:focus": { outline: "none" },
-                    }}
-                  >
+                <TableCell align="center">
+                  <IconButton disableRipple sx={{ "&:focus": { outline: "none" } }}>
                     <InfoIcon
-                      onClick={() => handleTableData(field.fieldName,field.id)}
-                      sx={{ color: "primary.main" }}
+                      onClick={() => handleTableData(field.fieldName, field.id)}
+                      sx={{ color: "#1976d2" }}
                     />
                   </IconButton>
                 </TableCell>
@@ -129,12 +109,107 @@ export const FieldsList = () => {
           ) : (
             <TableRow>
               <TableCell colSpan={6} align="center">
-                <Typography variant="h6">No Data Available</Typography>
+                <Typography variant="h6" color="textSecondary">
+                  No Data Available
+                </Typography>
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
     </TableContainer>
+
+
+
+    // <TableContainer component={Paper}>
+    //   <Table sx={{ minWidth: 450 }} aria-label="simple table">
+    //     <TableHead>
+    //       <TableRow sx={{ bgcolor: "lightgrey" }}>
+    //         <TableCell align="center">S.No</TableCell>
+    //         <TableCell align="center">Field Name</TableCell>
+    //         <TableCell align="center">Field Area</TableCell>
+    //         <TableCell align="right">Edit</TableCell>
+    //         <TableCell align="right">Delete</TableCell>
+    //         <TableCell align="right">Info</TableCell>
+    //       </TableRow>
+    //     </TableHead>
+    //     <TableBody>
+    //       {rows.length > 0 ? (
+    //         rows.map((field, id) => (
+    //           <TableRow
+    //             key={field.id}
+    //             sx={{
+    //               "&:last-child td, &:last-child th": { border: 0 },
+    //               px: 2,
+    //               py: 1.5,
+    //               borderRadius: 2,
+    //               transition: "background 0.2s",
+    //               "&:hover": {
+    //                 backgroundColor: "#e0e0e0",
+    //               },
+    //               my: 0.5,
+    //             }}
+    //             //  onClick={() => handleTableData(field.fieldName,field.id)}
+    //           >
+    //             <TableCell align="center"  onClick={() => handleTableData(field.fieldName,field.id)}>{id + 1}</TableCell>
+    //             <TableCell component="th" scope="row" align="center"  onClick={() => handleTableData(field.fieldName,field.id)}>
+    //               {field.fieldName}
+    //             </TableCell>
+    //             <TableCell align="center"  onClick={() => handleTableData(field.fieldName,field.id)}>{field.fieldArea}</TableCell>
+    //             <TableCell align="right">
+    //               <IconButton
+    //                 disableRipple
+    //                 sx={{
+    //                   "&:focus": { outline: "none" },
+    //                 }}
+    //               >
+    //                 <EditIcon
+    //                   sx={{ color: "warning.main" }}
+    //                   onClick={() =>
+    //                     handleEditData(
+    //                       field.id,
+    //                       field.fieldName,
+    //                       field.fieldArea
+    //                     )
+    //                   }
+    //                 />
+    //               </IconButton>
+    //             </TableCell>
+    //             <TableCell align="right">
+    //               <IconButton
+    //                 disableRipple
+    //                 sx={{
+    //                   color: "#f44336",
+    //                   "&:focus": { outline: "none" },
+    //                 }}
+    //               >
+    //                 <DeleteIcon onClick={() => handleDeleteData(field.id)} />
+    //               </IconButton>
+    //             </TableCell>
+    //             <TableCell align="right">
+    //               <IconButton
+    //                 disableRipple
+    //                 sx={{
+    //                   "&:focus": { outline: "none" },
+    //                 }}
+    //               >
+    //                 <InfoIcon
+    //                   onClick={() => handleTableData(field.fieldName,field.id)}
+    //                   sx={{ color: "primary.main" }}
+    //                 />
+    //               </IconButton>
+    //             </TableCell>
+    //           </TableRow>
+    //         ))
+    //       ) : (
+    //         <TableRow>
+    //           <TableCell colSpan={6} align="center">
+    //             <Typography variant="h6">No Data Available</Typography>
+    //           </TableCell>
+    //         </TableRow>
+    //       )}
+    //     </TableBody>
+    //   </Table>
+    // </TableContainer>
   );
 };

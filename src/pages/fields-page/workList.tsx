@@ -83,7 +83,14 @@ export const WorkList = () => {
 
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box   sx={{
+    height: 300,
+    // width: "100%",
+    bgcolor: "#f9fafc",
+    // p: 2,
+    borderRadius: 2,
+    boxShadow: 3,
+  }}>
       <DataGrid
         rows={paginatedData}
         columns={columns}
@@ -92,12 +99,27 @@ export const WorkList = () => {
         pageSizeOptions={[5, 10, 20]}
         paginationMode="server"
         rowCount={rows.length}
+         sx={{
+      bgcolor: "white",
+      borderRadius: 2,
+      "& .MuiDataGrid-columnHeaders": {
+        backgroundColor: "#e3f2fd", // Light blue
+        color: "#0d47a1", // Darker blue text
+        fontWeight: "bold",
+      },
+      "& .MuiDataGrid-row:hover": {
+        backgroundColor: "#f1f8ff",
+      },
+      "& .MuiDataGrid-cell": {
+        color: "#37474f", // Blue-gray text
+      },
+    }}
       />
-      <Box sx={{ mt: 2, textAlign: "right", fontWeight: "bold" }}>
-        <Typography variant="h6" color="black" component="h6">
+      <Box  sx={{ mt: 2, textAlign: "right", fontWeight: "bold" }}>
+        <Typography variant="h6" color="#2e7d32" component="h6">
           Total Cost of Current Page: {totalCurrentCost}
         </Typography>
-        <Typography variant="h6" color="black" component="h6">
+        <Typography variant="h6" color="#1b5e20" component="h6">
           Total Cost {cost}
         </Typography>
       </Box>
