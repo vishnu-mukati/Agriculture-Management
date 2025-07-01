@@ -77,7 +77,6 @@ export const LoginPage = () => {
         navigate("/");
       }
     } catch (err: any) {
-      console.error("Failed to login:", err.response?.data?.error?.message);
       alert(`'Failed to login',${err.response?.data?.error?.message}`);
     }
 

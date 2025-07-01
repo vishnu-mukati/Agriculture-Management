@@ -28,14 +28,12 @@ export const FieldsList = () => {
 
   const rows = listData;
   const handleTableData = (fieldName:string,id:string) => {
-    console.log(fieldName,"is clicked")
     navigate(`/fieldForm/${id}`);
   };
 
   const handleDeleteData = async (id: string) => {
     await deleteApi.firebaseDeleteData(userEmail ?? null, id);
     dispatch(deleteDataList(id));
-    console.log(id);
   };
 
   const handleEditData = (id: string, fieldName: string, fieldArea: number) => {
@@ -46,7 +44,6 @@ export const FieldsList = () => {
     };
     dispatch(edidtFromList(data));
 
-    console.log("data edit successfully", id);
   };
 
   return (

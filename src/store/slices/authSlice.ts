@@ -13,7 +13,6 @@ const initialState: AuthState = {
   isLogin: !!localStorage.getItem("token"),
   // refreshToken : localStorage.getItem('refreshToken'),
 };
-console.log();
 
 const AuthSlice = createSlice({
   name: "auth",

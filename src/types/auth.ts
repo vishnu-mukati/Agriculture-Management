@@ -83,7 +83,10 @@ export interface getWorkData{
    fieldWork : string,
    workDate : string|undefined,
    cost : number,
+   fieldId : string|undefined,
 }
+
+
 export interface workDataListState {
   workList : getWorkData[],
 }
@@ -96,3 +99,16 @@ export interface firebaseWorkDataResponse{
     id : string,
   }
 }
+
+export interface WorkListProps {
+  onTotalCostChange: (cost: number) => void;
+};
+
+
+export interface WorkItem {
+  id: string;
+  fieldId: string;
+  fieldWork: string;
+  workDate: string;
+  cost: number;
+};

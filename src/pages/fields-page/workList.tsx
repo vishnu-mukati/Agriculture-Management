@@ -3,15 +3,16 @@ import type { GridPaginationModel } from "@mui/x-data-grid";
 import { Box, IconButton, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/slices";
+import type { WorkListProps } from "../../types/auth";
+
 export const WorkList = () => {
+  const dispatch = useDispatch();
+   
   const userData = useSelector((state: RootState) => state.work.workList);
-
   const rows = userData;
-
-  console.log(rows);
 
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
@@ -77,7 +78,9 @@ export const WorkList = () => {
     //   },
   ];
 
-  const totalCost = paginatedData.reduce((acc, curr) => acc + curr.cost, 0);
+  const cost = rows.reduce((acc, curr) => acc + curr.cost, 0);
+  const totalCurrentCost = paginatedData.reduce((acc, curr) => acc + curr.cost, 0);
+
 
   return (
     <Box sx={{ height: 400, width: "100%" }}>
@@ -92,7 +95,10 @@ export const WorkList = () => {
       />
       <Box sx={{ mt: 2, textAlign: "right", fontWeight: "bold" }}>
         <Typography variant="h6" color="black" component="h6">
-          Total Cost of Current Page: ₹{totalCost}
+          Total Cost of Current Page: {totalCurrentCost}
+        </Typography>
+        <Typography variant="h6" color="black" component="h6">
+          Total Cost {cost}
         </Typography>
       </Box>
     </Box>

@@ -27,10 +27,10 @@ export const Fields = () => {
   const dispatch = useDispatch();
   const userEmail = useSelector((state: RootState) => state.auth.user?.email);
   const editData = useSelector((state: RootState) => state.list.editDataList);
-  console.log(editData);
+
 
   // const userEmail = localStorage.getItem('email');
-  console.log(userEmail);
+
   const safeUserEmail: string |null =userEmail??null;
 
   useEffect(() => {
@@ -68,7 +68,6 @@ export const Fields = () => {
         dispatch(removeFromList());
       }
     } catch (err: any) {
-      console.log(err);
 
       console.error("failed to fielddata", err.response?.data?.error?.message);
     }

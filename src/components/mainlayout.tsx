@@ -14,17 +14,18 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
 const drawerWidthCollapsed = 50;
-const drawerWidthExpanded = 180;
+const drawerWidthExpanded = 180;  
 import { Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Logout } from "../store/slices/authSlice";
 import { useLocation } from "react-router-dom";
-
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 const navItems = [
   { label: "Dashboard", icon: <DashboardIcon />, path: "/" },
   { label: "Fields", icon: <ShoppingCartIcon />, path: "/fields" },
+  { label : "Statics", icon : <EqualizerIcon/>, path:"/statics"},
 ];
 
 export default function MainLayout() {
