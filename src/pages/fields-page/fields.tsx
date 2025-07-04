@@ -24,10 +24,10 @@ export const Fields = () => {
   const [formShow, setFormShow] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [fieldArea, setFieldArea] = useState("");
+  const [returnProfit, setReturnProfit] = useState("");
   const dispatch = useDispatch();
   const userEmail = useSelector((state: RootState) => state.auth.user?.email);
   const editData = useSelector((state: RootState) => state.list.editDataList);
-
 
   // const userEmail = localStorage.getItem('email');
 
@@ -68,7 +68,6 @@ export const Fields = () => {
         dispatch(removeFromList());
       }
     } catch (err: any) {
-
       console.error("failed to fielddata", err.response?.data?.error?.message);
     }
   };
@@ -79,6 +78,7 @@ export const Fields = () => {
     const data = {
       fieldName,
       fieldArea: Number(fieldArea),
+      returnProfit : returnProfit,
     };
 
     try {
@@ -92,6 +92,7 @@ export const Fields = () => {
           id: response.data.name,
           fieldName,
           fieldArea: Number(fieldArea),
+          returnProfit : returnProfit,
         };
         dispatch(addFieldToTop(newField));
       }
@@ -113,7 +114,6 @@ export const Fields = () => {
 
   return (
     <>
-
       <Box
         sx={{
           width: "100%",
@@ -179,6 +179,17 @@ export const Fields = () => {
                   inputProps={{ min: 0, step: "any" }}
                   sx={{ bgcolor: "#ffffff" }}
                 />
+                {editData?.id && (
+                  <TextField
+                    label="Profit-Return"
+                    fullWidth
+                    variant="outlined"
+                    value={returnProfit}
+                    onChange={(e) => setReturnProfit(e.target.value)}
+                    type="number"
+                    sx={{ bgcolor: "#ffffff" }}
+                  />
+                )}
               </Stack>
               <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
                 <Button
@@ -231,7 +242,6 @@ export const Fields = () => {
       <Box mt={3}>
         <FieldsList />
       </Box>
-
 
       {/* <Box
         sx={{

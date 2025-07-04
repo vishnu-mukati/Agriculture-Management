@@ -20,7 +20,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Logout } from "../store/slices/authSlice";
-import { useLocation } from "react-router-dom";
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 const navItems = [
   { label: "Dashboard", icon: <DashboardIcon />, path: "/" },
@@ -31,7 +30,6 @@ const navItems = [
 export default function MainLayout() {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
 
 

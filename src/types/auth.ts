@@ -68,6 +68,7 @@ export interface firebaseGetDataResponse {
   [key: string]: {
     fieldName: string;
     fieldArea: number;
+    returnProfit : number,
     id: string;
   };
 }
