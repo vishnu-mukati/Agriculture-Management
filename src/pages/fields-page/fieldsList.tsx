@@ -36,11 +36,12 @@ export const FieldsList = () => {
     dispatch(deleteDataList(id));
   };
 
-  const handleEditData = (id: string, fieldName: string, fieldArea: number) => {
+  const handleEditData = (id: string, fieldName: string, fieldArea: number, returnProfit : number) => {
     const data = {
       id,
       fieldName,
       fieldArea,
+      returnProfit,
     };
     dispatch(edidtFromList(data));
 
@@ -86,7 +87,7 @@ export const FieldsList = () => {
                 <TableCell align="center">
                   <IconButton disableRipple sx={{ "&:focus": { outline: "none" } }}>
                     <EditIcon
-                      onClick={() => handleEditData(field.id, field.fieldName, field.fieldArea)}
+                      onClick={() => handleEditData(field.id, field.fieldName, field.fieldArea, field.returnProfit)}
                       sx={{ color: "#ff9800" }}
                     />
                   </IconButton>

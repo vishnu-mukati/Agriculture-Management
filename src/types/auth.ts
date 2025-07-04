@@ -47,11 +47,13 @@ export interface getfieldData {
   id: string;
   fieldName: string;
   fieldArea: number;
+  returnProfit : number;
 }
 
 export interface editfieldData {
   fieldName : string,
   fieldArea : number,
+  returnProfit : number|undefined,
   id : string,
 }
 
@@ -113,3 +115,27 @@ export interface WorkItem {
   workDate: string;
   cost: number;
 };
+
+// export interface Chart {
+//   totalCost : number,
+//   returnProfit : number,
+// }
+
+export interface RenderLabelProps {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  percent: number;
+  index: number;
+}
+
+export interface WorkCostChartProps {
+  selectedFieldId: string;
+}
+
+export interface PieDataItem {
+  name: string;
+  value: number;
+}

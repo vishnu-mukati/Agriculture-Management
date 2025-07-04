@@ -36,7 +36,8 @@ export const Fields = () => {
   useEffect(() => {
     if (editData) {
       setFieldName(editData.fieldName);
-      setFieldArea(editData.fieldArea.toString()); // assuming fieldArea is a number
+      setFieldArea(editData.fieldArea.toString());
+      setReturnProfit((editData.returnProfit??0).toString());
       setFormShow(true);
     }
   }, [editData]);
@@ -78,13 +79,13 @@ export const Fields = () => {
     const data = {
       fieldName,
       fieldArea: Number(fieldArea),
-      returnProfit : returnProfit,
+      returnProfit : Number(returnProfit)||0,
     };
 
     try {
       if (editData?.id) {
         await editApi.firebaseEditData(safeUserEmail, editData.id, data);
-        await getData();
+        await getData(); // for update the latest data to redux   
         dispatch(clearEditData());
       } else {
         const response = await dataApi.firebaseListStore(data, safeUserEmail);
@@ -92,7 +93,7 @@ export const Fields = () => {
           id: response.data.name,
           fieldName,
           fieldArea: Number(fieldArea),
-          returnProfit : returnProfit,
+          returnProfit : Number(returnProfit),
         };
         dispatch(addFieldToTop(newField));
       }
@@ -102,6 +103,7 @@ export const Fields = () => {
 
     setFieldName("");
     setFieldArea("");
+    setReturnProfit("");
     setFormShow(false);
   };
 
@@ -109,6 +111,7 @@ export const Fields = () => {
     setFormShow((prev) => !prev);
     setFieldName("");
     setFieldArea("");
+    setReturnProfit("");
     dispatch(clearEditData());
   };
 
