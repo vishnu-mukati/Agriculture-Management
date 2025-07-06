@@ -27,7 +27,7 @@ const navItems = [
   { label : "Statics", icon : <EqualizerIcon/>, path:"/statics"},
 ];
 
-export default function MainLayout() {
+export const MainLayout = () => {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
