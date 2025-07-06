@@ -21,6 +21,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Logout } from "../store/slices/authSlice";
 import EqualizerIcon from '@mui/icons-material/Equalizer';
+import { removeFromList } from "../store/slices/fieldsListSlice";
+import { removeWorkList } from "../store/slices/fieldWorkSlice";
 const navItems = [
   { label: "Dashboard", icon: <DashboardIcon />, path: "/" },
   { label: "Fields", icon: <ShoppingCartIcon />, path: "/fields" },
@@ -38,6 +40,8 @@ export const MainLayout = () => {
   };
 
   const logOutHandler = () => {
+    dispatch(removeFromList());
+    dispatch(removeWorkList());
     dispatch(Logout());
     navigate("/login");
   }
