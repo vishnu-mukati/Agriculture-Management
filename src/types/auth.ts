@@ -116,11 +116,6 @@ export interface WorkItem {
   cost: number;
 };
 
-// export interface Chart {
-//   totalCost : number,
-//   returnProfit : number,
-// }
-
 export interface RenderLabelProps {
   cx: number;
   cy: number;
