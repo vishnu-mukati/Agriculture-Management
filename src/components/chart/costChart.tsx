@@ -72,7 +72,7 @@ export const CostChart = () => {
                 return `${name} ${percentage}%`;
               }}
             >
-              {pieChartData.map((entry : PieDataItem, index) => (
+              {pieChartData.map(( _ : PieDataItem, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}

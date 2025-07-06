@@ -63,7 +63,7 @@ export const ProfitChart = () => {
               `${name} ${percent ? (percent * 100).toFixed(0) : 0}%`
             }
           >
-            {data.map((entery: PieDataItem, index) => (
+            {data.map((_:PieDataItem ,index) => (
               <Cell key={`cell-${index}`} fill={COLOR[index % COLOR.length]} />
             ))}
           </Pie>
