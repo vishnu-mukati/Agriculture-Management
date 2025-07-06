@@ -27,7 +27,7 @@ export const FieldsList = () => {
   const userEmail = useSelector((state: RootState) => state.auth.user?.email);
 
   const rows = listData;
-  const handleTableData = (fieldName: string, id: string) => {
+  const handleTableData = ( id: string) => {
     navigate(`/fieldForm/${id}`);
   };
 
@@ -75,13 +75,13 @@ export const FieldsList = () => {
                   },
                 }}
               >
-                <TableCell align="center" onClick={() => handleTableData(field.fieldName, field.id)}>
+                <TableCell align="center" onClick={() => handleTableData(field.id)}>
                   {id + 1}
                 </TableCell>
-                <TableCell align="center" onClick={() => handleTableData(field.fieldName, field.id)}>
+                <TableCell align="center" onClick={() => handleTableData( field.id)}>
                   {field.fieldName}
                 </TableCell>
-                <TableCell align="center" onClick={() => handleTableData(field.fieldName, field.id)}>
+                <TableCell align="center" onClick={() => handleTableData( field.id)}>
                   {field.fieldArea}
                 </TableCell>
                 <TableCell align="center">
@@ -100,7 +100,7 @@ export const FieldsList = () => {
                 <TableCell align="center">
                   <IconButton disableRipple sx={{ "&:focus": { outline: "none" } }}>
                     <InfoIcon
-                      onClick={() => handleTableData(field.fieldName, field.id)}
+                      onClick={() => handleTableData( field.id)}
                       sx={{ color: "#1976d2" }}
                     />
                   </IconButton>

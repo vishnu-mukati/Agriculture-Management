@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/slices";
+import type { PieDataItem } from "../../types/auth";
 
 import {
   PieChart,
@@ -14,15 +15,11 @@ import {
 const COLOR = ["green", "red"];
 
 export const ProfitChart = () => {
-
-
-
   const fieldListData = useSelector(
     (state: RootState) => state.list.fieldsListData
   );
 
   const workListData = useSelector((state: RootState) => state.work.workList);
-
 
   //   const getTotalCostForField = (fieldId: string) => {
   //     return workListData
@@ -36,7 +33,6 @@ export const ProfitChart = () => {
   );
 
   const totalWorkCost = workListData.reduce((acc, work) => acc + work.cost, 0);
-
 
   const profit = returnProfit || 0;
   const cost = totalWorkCost || 0;
@@ -55,26 +51,26 @@ export const ProfitChart = () => {
   }
   return (
     <Box>
-    <ResponsiveContainer width="100%" height={400}>
-      <PieChart>
-        <Pie
-          data={data}
-          innerRadius={80}
-          outerRadius={120}
-          paddingAngle={5}
-          dataKey="value"
-          label={({ name, percent }) =>
-            `${name} ${percent ? (percent * 100).toFixed(0) : 0}%`
-          }
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLOR[index % COLOR.length]} />
-          ))}
-        </Pie>
-        <Tooltip />
-        <Legend />
-      </PieChart>
-    </ResponsiveContainer>
+      <ResponsiveContainer width="100%" height={400}>
+        <PieChart>
+          <Pie
+            data={data}
+            innerRadius={80}
+            outerRadius={120}
+            paddingAngle={5}
+            dataKey="value"
+            label={({ name, percent }) =>
+              `${name} ${percent ? (percent * 100).toFixed(0) : 0}%`
+            }
+          >
+            {data.map((entery: PieDataItem, index) => (
+              <Cell key={`cell-${index}`} fill={COLOR[index % COLOR.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
     </Box>
   );
 };

@@ -1,15 +1,11 @@
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridPaginationModel } from "@mui/x-data-grid";
-import { Box, IconButton, Typography } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Box, Typography } from "@mui/material";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import type { RootState } from "../../store/slices";
-import type { WorkListProps } from "../../types/auth";
 
 export const WorkList = () => {
-  const dispatch = useDispatch();
    
   const userData = useSelector((state: RootState) => state.work.workList);
   const rows = userData;
@@ -36,10 +32,6 @@ export const WorkList = () => {
   //   console.log("Delete", id);
   // };
 
-  const rowsWithIndex = rows.map((row, index) => ({
-    ...row,
-    serial: index + 1,
-  }));
 
   const columns = [
     {

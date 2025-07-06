@@ -12,6 +12,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import type { PieDataItem } from "../../types/auth";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#845EC2', '#D65DB1'];
 
@@ -71,7 +72,7 @@ export const CostChart = () => {
                 return `${name} ${percentage}%`;
               }}
             >
-              {pieChartData.map((entry, index) => (
+              {pieChartData.map((entry : PieDataItem, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}
