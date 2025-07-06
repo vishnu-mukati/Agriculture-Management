@@ -1,54 +1,63 @@
-# React + TypeScript + Vite
+# Agriculture Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a web-based Agriculture Management System built with **React**, **TypeScript**, **Redux Toolkit**, **Material UI**, and **Vite**. It helps users manage agricultural fields, track field works, and visualize costs and profits.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. Authentication
+- **Login/Signup**: Secure authentication using Firebase Auth API.
+- **Session Persistence**: User sessions are stored in localStorage for persistent login.
 
-## Expanding the ESLint configuration
+### 2. Field Management
+- **Add/Edit/Delete Fields**: Users can add new fields, edit existing ones, or remove them.
+- **Field List**: All fields are displayed in a table with options to edit, delete, or view details.
+- **Profit Tracking**: Each field can have an associated profit value.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 3. Work Management
+- **Add Work to Fields**: For each field, users can log various works (e.g., Irrigation, Pesticide, Harvesting) with date and cost.
+- **Work List**: All works for a field are shown in a paginated table with total and page-wise cost summaries.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 4. Data Visualization
+- **Dashboard**: Visual overview of profits and costs using charts.
+  - **Profit and Cost Pie Chart**: Shows total profit vs. total cost.
+  - **Work-wise Cost Pie Chart**: Displays cost distribution by work type, filterable by field.
+  - **Per Field Cost Bar Chart**: Compares profit and cost for each field.
+- **Field Statistics Table**: Tabular view of all fields with their total costs.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 5. Data Sync
+- **Firebase Realtime Database**: All field and work data is stored and synced with Firebase.
+- **Auto Refresh**: Data is periodically refreshed to keep the UI up-to-date.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 6. UI/UX
+- **Material UI**: Modern, responsive design using Material UI components.
+- **Sidebar Navigation**: Collapsible sidebar for easy navigation between dashboard, fields, and statistics.
+- **Loading Indicators**: Feedback during async operations.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Project Structure
+
+- `src/components/`: Reusable UI components (charts, layouts, tables).
+- `src/pages/`: Page-level components (dashboard, fields, login).
+- `src/store/`: Redux slices and API logic.
+- `src/types/`: TypeScript type definitions.
+- `src/hooks/`: Custom React hooks (e.g., Firebase data sync).
+
+## Getting Started
+
+1. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+
+2. **Run the development server:**
+   ```sh
+   npm run dev
+   ```
+
+3. **Build for production:**
+   ```sh
+   npm run build
+   ```
+
+## License
+
+This project is

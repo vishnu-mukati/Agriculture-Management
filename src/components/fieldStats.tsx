@@ -10,9 +10,12 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/slices";
+import { useFirebaseData } from "../hooks/useFirebaseData";
 
 
 export const FieldStates = () => {
+
+  useFirebaseData();
 
   const fieldListData = useSelector(
     (state: RootState) => state.list.fieldsListData
