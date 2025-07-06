@@ -193,6 +193,8 @@ export const FieldForm = () => {
                   <MenuItem value="Plow">Plow</MenuItem>
                   <MenuItem value="Cultivator">Cultivator</MenuItem>
                   <MenuItem value="Showing">Showing</MenuItem>
+                  <MenuItem value="Rotavator">Rotavator</MenuItem>
+                  <MenuItem value="Harvesting">Harvesting</MenuItem>
                 </TextField>
               </Stack>
               <Box padding={2}>
