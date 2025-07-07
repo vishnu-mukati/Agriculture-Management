@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { RootState } from "../../store/slices";
+import { Typography } from "@mui/material";
 
 
 
@@ -39,8 +40,11 @@ const data = fieldCostList.map((item) => ({
   cost: item.totalCost || 0,
 }));
 
+const isData = data.length>0;
+
   return (
     <ResponsiveContainer width="100%" height={400}>
+      {isData ? 
       <BarChart
         data={data}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
@@ -53,6 +57,7 @@ const data = fieldCostList.map((item) => ({
         <Bar dataKey="profit" fill="#4CAF50" name="Profit" />
         <Bar dataKey="cost" fill="#F44336" name="Cost" />
       </BarChart>
+      : <Typography>No Data Available</Typography>}
     </ResponsiveContainer>
   );
 };
