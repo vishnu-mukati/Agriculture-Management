@@ -1,45 +1,3 @@
-// import { Box, TextField, Typography, Button } from "@mui/material";
-// import React, { useState } from "react";
-// import { authApi } from "../../store/apis/axiosInstance";
-
-// const ForgotPassword = () => {
-//   const [email, setEmail] = useState("");
-
-//   const formSubmitHandler = async (e: React.FormEvent) => {
-//     e.preventDefault();
-
-//     const resetData = {
-//       requestType: "PASSWORD RESET",
-//       email,
-//     };
-
-//     try {
-//       await authApi.forgotPassword(resetData);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-//   return (
-//     <Box>
-//       <Typography>Reset Your Password</Typography>
-
-//       <form onSubmit={formSubmitHandler}>
-//         <TextField
-//           label="Email"
-//           value={email}
-//           helperText="Please Enter Your Registered Email"
-//           variant="outlined"
-//           required
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-//         <Button type="submit">Send Email</Button>
-//       </form>
-//     </Box>
-//   );
-// };
-
-// export default ForgotPassword;
-
 import {
   Box,
   TextField,
@@ -68,24 +26,24 @@ const ForgotPassword = () => {
     setErrorMsg("");
 
     const resetData = {
-      requestType: "PASSWORD_RESET", // ✅ fixed typo
+      requestType: "PASSWORD_RESET",
       email,
     };
 
     try {
       await authApi.forgotPassword(resetData);
       setSuccessMsg(
-        "📧 If this email is registered, a reset link has been sent."
+        "A reset link has been sent."
       );
-      setEmail(""); // clear field
     } catch (err: any) {
-      const errorMessage = err?.response?.data?.error?.message;
-      if (errorMessage === "EMAIL_NOT_FOUND") {
-        setErrorMsg("❌ This email is not registered.");
-      } else {
-        setErrorMsg("⚠️ Something went wrong. Try again later.");
-      }
+        const errorMessage = err?.response?.data?.error?.message;
+        if (errorMessage === "EMAIL_NOT_FOUND") {
+            setErrorMsg("This email is not registered.");
+        } else {
+            setErrorMsg("Something went wrong. Try again later.");
+        }
     }
+    setEmail(""); 
   };
 
   const logInHandler = () =>{
