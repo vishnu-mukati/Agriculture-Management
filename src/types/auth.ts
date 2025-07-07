@@ -5,6 +5,11 @@ export interface UserData {
   returnSecureToken: boolean;
 }
 
+export interface reset {
+  requestType : string;
+  email : string;
+}
+
 export interface AuthState {
   user: UserData | null;
   token: string | null;
@@ -30,6 +35,10 @@ export interface SignUpResponse {
   idToken: string;
   expiresIn: string;
   refreshToken: string;
+}
+
+export interface ResetResponse {
+  email : string;
 }
 
 export interface fieldsData {

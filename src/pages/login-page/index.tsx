@@ -87,6 +87,10 @@ export const LoginPage = () => {
     setIsLogIn((prev) => !prev);
   };
 
+  const forgotPasswordHandler = () =>{
+     navigate("/forgotPassword");
+  }
+
   return (
     <Paper
       elevation={6}
@@ -183,11 +187,11 @@ export const LoginPage = () => {
           )}
         </Stack>
         {!isLogin && (
-          <Stack padding="12px">
-            <Link sx={{ cursor: "pointer", color: "primary" }}>
+        <Typography sx={{ cursor: "pointer", p: "12px" }}>
+            <Link onClick={forgotPasswordHandler} sx={{ cursor: "pointer", color: "primary" }}>
               ForgotPassword
             </Link>
-          </Stack>
+        </Typography>
         )}
         <Typography sx={{ cursor: "pointer", p: "12px" }}>
           {!isLogin ? "Don't have an account?" : "Have an account?"}

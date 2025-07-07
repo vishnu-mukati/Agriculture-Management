@@ -8,6 +8,7 @@ import { Dashboard } from "./pages/dashboard/Dashboard";
 import { Fields } from "./pages/fields-page/fields";
 import { FieldForm } from "./pages/fields-page/fieldForm";
 import { FieldStates } from "./components/fieldStats";
+import ForgotPassword from "./pages/forgot-password/forgotPassword";
 
 function App() {
   const isAuth = useSelector((state: RootState) => state.auth.isLogin);
@@ -27,6 +28,7 @@ function App() {
           </Route>
         )}
         {!isAuth && <Route path="*" element={<Navigate to="/login" />} />}
+        {!isAuth && <Route path="forgotPassword" element={<ForgotPassword/>}/>}
       </Routes>
     </BrowserRouter>
   );

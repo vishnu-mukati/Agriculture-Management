@@ -5,6 +5,8 @@ import type {
   firebaseDataResponse,
   firebaseGetDataResponse,
   firebaseWorkDataResponse,
+  reset,
+  ResetResponse,
   SignInResponse,
   SignUpResponse,
   UserData,
@@ -36,6 +38,9 @@ export const authApi = {
   signUp: (userdata: UserData): Promise<AxiosResponse<SignUpResponse>> => {
     return api.post(`${baseURL}:signUp?key=${Api_Key}`, userdata);
   },
+  forgotPassword : (passwordData : reset) : Promise<AxiosResponse<ResetResponse>> => {
+    return api.post(`${baseURL}:sendOobCode?key=${Api_Key}`, passwordData);
+  }
 };
 
 export const dataApi = {
