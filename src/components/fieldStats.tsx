@@ -16,7 +16,7 @@ import { useFirebaseData } from "../hooks/useFirebaseData";
 export const FieldStates = () => {
 
   useFirebaseData();
-
+ 
   const fieldListData = useSelector(
     (state: RootState) => state.list.fieldsListData
   );
@@ -30,7 +30,7 @@ export const FieldStates = () => {
   };
 
   return (
-    <Box>
+    <Box width={{ xs: '100%', sm: '90%', md: '700px' }}>
       <Box bgcolor="floralwhite">
         <Typography variant="h4" color="black">
           Cost of the fields
@@ -39,15 +39,15 @@ export const FieldStates = () => {
       <Box boxShadow={2}>
         <TableContainer sx={{ borderRadius: 2, boxShadow: 3 }}>
           <Table>
-            <TableHead>
-              <TableRow sx={{ backgroundColor: "#f0f4f8" }}>
-                <TableCell sx={{ fontWeight: "bold", color: "#2c3e50" }}>
+            <TableHead >
+              <TableRow sx={{ backgroundColor: "#f0f4f8"}}>
+                <TableCell align="center" sx={{ fontWeight: "bold", color: "#2c3e50" }}>
                   S.No
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#2c3e50" }}>
+                <TableCell align="center" sx={{ fontWeight: "bold", color: "#2c3e50" }}>
                   Fields
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#2c3e50" }}>
+                <TableCell align="center" sx={{ fontWeight: "bold", color: "#2c3e50" }}>
                   Field Total Cost
                 </TableCell>
               </TableRow>
