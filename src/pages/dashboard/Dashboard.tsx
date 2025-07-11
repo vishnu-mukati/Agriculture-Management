@@ -37,7 +37,7 @@ export const Dashboard = () => {
           <Paper
             elevation={3}
             sx={{
-              p: 3,
+              // p: 3,
               borderRadius: 3,
               boxShadow: "0px 3px 15px rgba(0,0,0,0.1)",
               backgroundColor: "#fff",
