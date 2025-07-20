@@ -6,6 +6,8 @@ import {
   TextField,
   Typography,
   InputAdornment,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FieldsList } from "./fieldsList";
@@ -33,11 +35,13 @@ export const Fields = () => {
 
   const safeUserEmail: string | null = userEmail ?? null;
 
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     if (editData) {
       setFieldName(editData.fieldName);
       setFieldArea(editData.fieldArea.toString());
-      setReturnProfit((editData.returnProfit??0).toString());
+      setReturnProfit((editData.returnProfit ?? 0).toString());
       setFormShow(true);
     }
   }, [editData]);
@@ -70,6 +74,9 @@ export const Fields = () => {
       }
     } catch (err: any) {
       console.error("failed to fielddata", err.response?.data?.error?.message);
+      setError(
+        err.response?.data?.error?.message || "Failed to fetch field data"
+      );
     }
   };
 
@@ -79,13 +86,13 @@ export const Fields = () => {
     const data = {
       fieldName,
       fieldArea: Number(fieldArea),
-      returnProfit : Number(returnProfit)||0,
+      returnProfit: Number(returnProfit) || 0,
     };
 
     try {
       if (editData?.id) {
         await editApi.firebaseEditData(safeUserEmail, editData.id, data);
-        await getData(); // for update the latest data to redux   
+        await getData(); // for update the latest data to redux
         dispatch(clearEditData());
       } else {
         const response = await dataApi.firebaseListStore(data, safeUserEmail);
@@ -93,12 +100,13 @@ export const Fields = () => {
           id: response.data.name,
           fieldName,
           fieldArea: Number(fieldArea),
-          returnProfit : Number(returnProfit),
+          returnProfit: Number(returnProfit),
         };
         dispatch(addFieldToTop(newField));
       }
     } catch (err: any) {
       console.error(err.response?.data?.error?.message);
+      setError(err.response?.data?.error?.message || "Failed to submit field");
     }
 
     setFieldName("");
@@ -117,6 +125,23 @@ export const Fields = () => {
 
   return (
     <>
+      <Box>
+        <Snackbar
+          open={!!error}
+          autoHideDuration={4000}
+          onClose={() => setError(null)}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert
+            onClose={() => setError(null)}
+            severity="error"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {error}
+          </Alert>
+        </Snackbar>
+      </Box>
       <Box
         sx={{
           width: "100%",
@@ -245,80 +270,6 @@ export const Fields = () => {
       <Box mt={3}>
         <FieldsList />
       </Box>
-
-      {/* <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          mt: 0,
-        }}
-      >
-        {formShow ? (
-          <Paper
-            elevation={6}
-            sx={{
-              width: "500px",
-              bgcolor: "offwhite",
-              minHeight: "150px",
-              padding: "32px",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="h4" gutterBottom>
-              Fields
-            </Typography>
-
-            <Box component="form" onSubmit={handleFormSubmit} sx={{p:2}}>
-              <Stack alignItems="center" spacing={2} direction="row">
-                <TextField
-                  label="field-name"
-                  value={fieldName}
-                  onChange={(e) => setFieldName(e.target.value)}
-                  required
-                />
-                <TextField
-                  label="field-area"
-                  value={fieldArea}
-                  onChange={(e) => setFieldArea(e.target.value)}
-                  type="number"
-                  required
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">Bi</InputAdornment>
-                    ),
-                  }}
-                  inputProps={{ min: 0 ,step:"any"}}
-                />
-              </Stack>
-              <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-                <Button variant="contained" type="submit">
-                  Add Field
-                </Button>
-                <Button variant="contained" onClick={handleFormToggle}>
-                  Cancel
-                </Button>
-              </Stack>
-            </Box>
-          </Paper>
-        ) : (
-          <Button
-            variant="contained"
-            onClick={handleFormToggle}
-            disableRipple
-            sx={{
-              margin: "20px",
-              "&:focus": { outline: "none" },
-            }}
-          >
-            Add Field
-          </Button>
-        )}
-      </Box>
-      <Box>
-        <FieldsList />
-      </Box> */}
     </>
   );
 };

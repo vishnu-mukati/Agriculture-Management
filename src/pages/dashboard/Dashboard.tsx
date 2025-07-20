@@ -1,11 +1,12 @@
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Alert, Box, Grid, Paper, Snackbar, Typography } from "@mui/material";
 import { ProfitChart } from "../../components/chart/profitChart";
 import { CostChart } from "../../components/chart/costChart";
 import { FieldProfitChart } from "../../components/chart/fieldProfitChart";
 import { useFirebaseData } from "../../hooks/useFirebaseData";
+
 export const Dashboard = () => {
 
-    useFirebaseData();
+      const { error, setError } = useFirebaseData();
 
   return (
     <Box sx={{ px: 4, py: 4 }}>
@@ -70,6 +71,17 @@ export const Dashboard = () => {
         </Grid>
 
       </Grid>
+
+       <Snackbar
+        open={!!error}
+        autoHideDuration={5000}
+        onClose={() => setError(null)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={() => setError(null)} severity="error" sx={{ width: "100%" }}>
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

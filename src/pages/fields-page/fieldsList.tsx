@@ -20,6 +20,7 @@ import {
 } from "../../store/slices/fieldsListSlice";
 import { deleteApi } from "../../store/apis/axiosInstance";
 import { useNavigate } from "react-router-dom";
+
 export const FieldsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

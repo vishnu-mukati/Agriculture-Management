@@ -7,6 +7,8 @@ import {
   TableRow,
   TableCell,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/slices";
@@ -15,7 +17,7 @@ import { useFirebaseData } from "../hooks/useFirebaseData";
 
 export const FieldStates = () => {
 
-  useFirebaseData();
+   const { error, setError } = useFirebaseData();
  
   const fieldListData = useSelector(
     (state: RootState) => state.list.fieldsListData
@@ -82,6 +84,16 @@ export const FieldStates = () => {
           </Table>
         </TableContainer>
       </Box>
+        <Snackbar
+              open={!!error}
+              autoHideDuration={5000}
+              onClose={() => setError(null)}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+              <Alert onClose={() => setError(null)} severity="error" sx={{ width: "100%" }}>
+                {error}
+              </Alert>
+            </Snackbar>
     </Box>
   );
 };

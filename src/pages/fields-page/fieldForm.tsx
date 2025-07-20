@@ -6,6 +6,8 @@ import {
   TextField,
   Button,
   MenuItem,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -23,7 +25,7 @@ import {
 } from "../../store/slices/fieldWorkSlice";
 import { WorkList } from "./workList";
 import { dataApi } from "../../store/apis/axiosInstance";
-import { addToList,removeFromList } from "../../store/slices/fieldsListSlice";
+import { addToList, removeFromList } from "../../store/slices/fieldsListSlice";
 
 export const FieldForm = () => {
   const { id } = useParams();
@@ -31,17 +33,14 @@ export const FieldForm = () => {
   const [fieldWork, setFieldWork] = useState("");
   const [workDate, setWorkDate] = useState<dayjs.Dayjs | null>(dayjs());
   const [cost, setCost] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch();
-
-
-
 
   const userEmail = useSelector((state: RootState) => state.auth.user?.email);
   const safeUserEmail: string | null = userEmail ?? null;
   const fieldList = useSelector(
     (state: RootState) => state.list.fieldsListData
   );
-
 
   const fieldData = fieldList
     .filter((item) => item.id === id)
@@ -52,7 +51,6 @@ export const FieldForm = () => {
 
     getData(); // when component mount for the first time
     const interval = setInterval(() => {
-
       getData();
     }, 20000);
 
@@ -63,17 +61,17 @@ export const FieldForm = () => {
 
   const getData = async () => {
     try {
-      const result =  await dataApi.firebaseListGet(safeUserEmail);
-         if (result.data) {
-                const fieldGetData = Object.keys(result.data).map((id) => ({
-                  ...result.data[id],
-                  id,
-                }));
-        
-                dispatch(addToList(fieldGetData));
-              } else {
-                dispatch(removeFromList());
-              }
+      const result = await dataApi.firebaseListGet(safeUserEmail);
+      if (result.data) {
+        const fieldGetData = Object.keys(result.data).map((id) => ({
+          ...result.data[id],
+          id,
+        }));
+
+        dispatch(addToList(fieldGetData));
+      } else {
+        dispatch(removeFromList());
+      }
       const response = await workListApi.firebaseListGet(safeUserEmail, id);
       if (response.data) {
         const finalData = Object.keys(response.data).map((dataId) => ({
@@ -86,8 +84,9 @@ export const FieldForm = () => {
       } else {
         dispatch(removeWorkList());
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      setError(err.response?.data?.error?.message || "Failed to fetch data");
     }
   };
 
@@ -117,8 +116,9 @@ export const FieldForm = () => {
         fieldId: id,
       };
       dispatch(addWorkToTop(newData));
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      setError(err.response?.data?.error?.message || "Failed to submit form");
     }
 
     setFieldWork("");
@@ -133,15 +133,17 @@ export const FieldForm = () => {
 
   return (
     <>
-      <Typography variant="h3" sx={{
-        bgcolor: "#e3f2fd",
-        color: "#0d47a1",
-        px: 2,
-        py: 1,
-        borderRadius: 1,
-        fontWeight: "bold",
-        mb: 2,
-      }}
+      <Typography
+        variant="h3"
+        sx={{
+          bgcolor: "#e3f2fd",
+          color: "#0d47a1",
+          px: 2,
+          py: 1,
+          borderRadius: 1,
+          fontWeight: "bold",
+          mb: 2,
+        }}
       >
         Welcome To {fieldData}
       </Typography>
@@ -227,16 +229,20 @@ export const FieldForm = () => {
                 />
               </Box>
               <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-                <Button variant="contained"
+                <Button
+                  variant="contained"
                   color="primary"
                   type="submit"
-                  sx={{ textTransform: "none", fontWeight: "bold", px: 3 }}>
+                  sx={{ textTransform: "none", fontWeight: "bold", px: 3 }}
+                >
                   Add Field
                 </Button>
-                <Button variant="outlined"
+                <Button
+                  variant="outlined"
                   color="error"
                   onClick={handleFormToggle}
-                  sx={{ textTransform: "none", fontWeight: "bold", px: 3 }}>
+                  sx={{ textTransform: "none", fontWeight: "bold", px: 3 }}
+                >
                   Cancel
                 </Button>
               </Stack>
@@ -251,7 +257,7 @@ export const FieldForm = () => {
               textTransform: "none",
               fontWeight: "bold",
               bgcolor: "#1976d2",
-              margin:"12px",
+              margin: "12px",
               "&:hover": {
                 bgcolor: "#1565c0",
               },
@@ -264,6 +270,21 @@ export const FieldForm = () => {
       <Box>
         <WorkList />
       </Box>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={4000}
+        onClose={() => setError(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setError(null)}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
